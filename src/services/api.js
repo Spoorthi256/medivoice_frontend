@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { authHeader } from './auth';
 
-const API_BASE = 'http://localhost:8080/api';
+const DEFAULT_API_BASE = 'http://localhost:8080/api';
+const API_BASE = (process.env.REACT_APP_API_BASE_URL || DEFAULT_API_BASE).replace(/\/+$/, '');
 
 const client = axios.create({
   baseURL: API_BASE,
