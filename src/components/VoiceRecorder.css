@@ -1,0 +1,52 @@
+.voice-recorder {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.25rem;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.voice-controls {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.voice-transcript {
+  width: 100%;
+  min-height: 140px;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+}
+
+.voice-error {
+  padding: 0.75rem;
+  background: #fee;
+  color: #a00;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.voice-message {
+  padding: 0.75rem;
+  background: #e6ffed;
+  border: 1px solid #d1fae5;
+  color: #065f46;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.voice-listening {
+  padding: 0.6rem 0.75rem;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  color: #0369a1;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}

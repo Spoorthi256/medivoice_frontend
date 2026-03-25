@@ -1,0 +1,88 @@
+.dashboard {
+  min-height: calc(100vh - 80px);
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.dashboard h1 {
+  margin: 0 0 1.5rem;
+  font-size: 1.75rem;
+  color: #1a5f7a;
+}
+
+.loading,
+.dashboard-error {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.dashboard-error {
+  color: #c00;
+  background: #fee;
+  border-radius: 8px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.dashboard-card {
+  background: #ffffff;
+  border: 1px solid #e4e7eb;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-card-key {
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 0.4rem;
+}
+
+.dashboard-card-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a5f7a;
+}
+
+.users-table th,
+.users-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.users-table th {
+  background: #1a5f7a;
+  color: white;
+  font-weight: 600;
+}
+
+.users-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.users-table td[colSpan] {
+  text-align: center;
+  color: #888;
+  padding: 2rem;
+}
