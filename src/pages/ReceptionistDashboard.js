@@ -182,11 +182,11 @@ function ReceptionistDashboard() {
 
         try {
           const patientData = await api.getPatientById(patientMatch.id);
-          const doctorLabel = patientData.assignedDoctorName
+          const assignedDoctorLabel = patientData.assignedDoctorName
             ? `Dr. ${patientData.assignedDoctorName}${patientData.assignedDoctorSpecialization ? ` (${patientData.assignedDoctorSpecialization})` : ''}`
             : 'None';
 
-          setAssignedDoctor(doctorLabel);
+          setAssignedDoctor(assignedDoctorLabel);
           setSelectedDoctorId(patientData.assignedDoctorId ? patientData.assignedDoctorId.toString() : '');
 
           if (patientData.medicalHistory) {
@@ -206,8 +206,8 @@ function ReceptionistDashboard() {
           setSelectedDoctorId(doctorMatch.id?.toString() || '');
           const name = doctorMatch.firstName && doctorMatch.lastName ? `${doctorMatch.firstName} ${doctorMatch.lastName}` : doctorMatch.username;
           const specialization = doctorMatch.specialization ? ` (${doctorMatch.specialization})` : '';
-          const doctorLabel = `Dr. ${name}${specialization}`;
-          setAssignedDoctor(doctorLabel);
+          const assignedDoctorLabel = `Dr. ${name}${specialization}`;
+          setAssignedDoctor(assignedDoctorLabel);
         }
       }
 
