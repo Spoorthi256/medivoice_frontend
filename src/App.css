@@ -2,9 +2,20 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f5f5f5;
+  background: var(--light-gray);
+  color: var(--dark-gray);
 }
 
 .App-main {
   flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 2rem;
+}
+
+@media (max-width: 768px) {
+  .App-main {
+    padding: 1rem 0.8rem 1.5rem;
+  }
 }

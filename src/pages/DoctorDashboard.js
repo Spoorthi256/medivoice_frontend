@@ -87,7 +87,7 @@ function DoctorDashboard() {
       </div>
 
       <div style={{ marginTop: '1.5rem' }}>
-        <h2>Patients</h2>
+        <h2>My Patients</h2>
         {patients.length === 0 ? (
           <p>No patients found.</p>
         ) : (
@@ -101,6 +101,42 @@ function DoctorDashboard() {
             ))}
           </ul>
         )}
+      </div>
+
+      <div style={{ marginTop: '1.5rem' }}>
+        <h2>Appointment Calendar</h2>
+        <div className="appointment-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Patient</th>
+                <th>Time</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {appointments.length === 0 ? (
+                <tr>
+                  <td colSpan="4">No appointments scheduled.</td>
+                </tr>
+              ) : (
+                appointments.map((a) => (
+                  <tr key={a.id}>
+                    <td>{new Date(a.appointmentDate).toLocaleDateString()}</td>
+                    <td>{a.patientName || 'N/A'}</td>
+                    <td>{new Date(a.appointmentDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+                    <td>
+                      <span className={`status-badge ${a.status?.toLowerCase() === 'completed' ? 'completed' : 'pending'}`}>
+                        {a.status || 'Pending'}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div style={{ marginTop: '1.5rem' }}>

@@ -1,0 +1,284 @@
+.smart-triage-preview {
+  padding: 4rem 2rem;
+  background: white;
+}
+
+.triage-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.triage-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.triage-demo-card,
+.severity-levels-card {
+  background: linear-gradient(135deg, #f8fafb 0%, #f0f5f9 100%);
+  border-radius: 16px;
+  padding: 2.5rem;
+  border: 1px solid #e0e7f1;
+}
+
+.triage-demo-card h3,
+.severity-levels-card h3 {
+  color: var(--primary-blue);
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+.triage-badge {
+  display: inline-block;
+  background: var(--badge-color);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+.risk-score-container {
+  margin: 2rem 0;
+}
+
+.risk-meter {
+  height: 20px;
+  background: #e0e7f1;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.risk-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff8c42 0%, #ff6b35 100%);
+  border-radius: 10px;
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 0 10px rgba(255, 140, 66, 0.4);
+}
+
+.risk-percentage {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1a1a1a;
+}
+
+.triage-description {
+  color: #666;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: white;
+  border-left: 4px solid var(--secondary-green);
+  border-radius: 8px;
+}
+
+.recommendations-list {
+  margin-top: 2rem;
+}
+
+.recommendations-list h4 {
+  color: var(--primary-blue);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.recommendations-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.recommendations-list li {
+  padding: 0.75rem 0;
+  padding-left: 1.5rem;
+  color: #555;
+  position: relative;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.recommendations-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #00b368;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Severity Levels Grid */
+.severity-levels-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.severity-item {
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: white;
+  border-left: 4px solid;
+  transition: all 0.3s ease;
+}
+
+.severity-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.severity-item.triage-low {
+  border-left-color: #00b368;
+}
+
+.severity-item.triage-medium {
+  border-left-color: #ffc107;
+}
+
+.severity-item.triage-high {
+  border-left-color: #ff8c42;
+}
+
+.severity-item.triage-emergency {
+  border-left-color: #d62828;
+}
+
+.severity-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.severity-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.severity-item.triage-low .severity-dot {
+  background: #00b368;
+}
+
+.severity-item.triage-medium .severity-dot {
+  background: #ffc107;
+}
+
+.severity-item.triage-high .severity-dot {
+  background: #ff8c42;
+}
+
+.severity-item.triage-emergency .severity-dot {
+  background: #d62828;
+}
+
+.severity-label {
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.severity-bar {
+  height: 12px;
+  background: #e0e7f1;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.severity-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.4s ease;
+}
+
+.severity-item.triage-low .severity-fill {
+  background: #00b368;
+}
+
+.severity-item.triage-medium .severity-fill {
+  background: #ffc107;
+}
+
+.severity-item.triage-high .severity-fill {
+  background: #ff8c42;
+}
+
+.severity-item.triage-emergency .severity-fill {
+  background: #d62828;
+}
+
+.severity-percentage {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #666;
+}
+
+.triage-benefits h4 {
+  color: var(--primary-blue);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e0e7f1;
+  font-size: 0.95rem;
+  color: #555;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.benefit-item:hover {
+  background: #e6f7ed;
+  border-color: var(--primary-blue);
+}
+
+.benefit-icon {
+  font-size: 1.3rem;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .smart-triage-preview {
+    padding: 2rem 1rem;
+  }
+
+  .triage-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .triage-demo-card,
+  .severity-levels-card {
+    padding: 1.5rem;
+  }
+
+  .risk-percentage {
+    font-size: 1.5rem;
+  }
+
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+}

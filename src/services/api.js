@@ -39,7 +39,11 @@ async function request(endpoint, options = {}) {
     });
     return response.data;
   } catch (e) {
-    throw wrapError(e);
+    const err = wrapError(e);
+    if (err.status === 403) {
+      err.message = 'Forbidden: You do not have permission to perform this action. Please login as Doctor or Admin.';
+    }
+    throw err;
   }
 }
 
@@ -71,7 +75,11 @@ export const api = {
   // Medical history
   getMedicalHistoryByPatient: (patientId) => request(`/medical-history/patient/${patientId}`, { method: 'GET' }),
 
-  // Voice notes
-  createVoiceNote: (note) => request('/voice-notes', { method: 'POST', body: note }),
-  getVoiceNotesByPatient: (patientId) => request(`/voice-notes/patient/${patientId}`, { method: 'GET' }),
+  // Symptom Analysis
+  analyzeSymptoms: (query) => request('/symptom-analysis/analyze', { method: 'POST', body: query }),
+  getQueryHistory: () => request('/symptom-analysis/history', { method: 'GET' }),
+  getPatientQueryHistory: (patientId) => request(`/symptom-analysis/patient/${patientId}/history`, { method: 'GET' }),
+
+  // Health Tips
+  getHealthTips: () => request('/health-tips', { method: 'GET' }),
 };

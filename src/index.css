@@ -5,9 +5,112 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f8f9fa;
+  color: #333;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Modern Medical Theme Colors */
+:root {
+  /* Primary Colors */
+  --primary-blue: #1f7a53; /* now greenish tone */
+  --primary-blue-light: #e6f7ed;
+  --primary-blue-dark: #145a3a;
+  
+  /* Secondary Colors */
+  --secondary-green: #009b6e;
+  --secondary-green-light: #e6fff4;
+  --secondary-green-dark: #007853;
+  
+  /* Accent Colors */
+  --accent-teal: #00a896;
+  --accent-orange: #ff8c42;
+  --accent-purple: #7c3aed;
+  --accent-red: #d62828;
+  
+  /* Neutral Colors */
+  --light-gray: #f8f9fa;
+  --white: #ffffff;
+  --dark-gray: #1a1a1a;
+  --medium-gray: #666666;
+  --border-color: #e0e7f1;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* Global Styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+button {
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-family: inherit;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+input, select, textarea {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: inherit;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.slide-in-up {
+  animation: slideInUp 0.5s ease-out;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-blue);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-blue-dark);
 }

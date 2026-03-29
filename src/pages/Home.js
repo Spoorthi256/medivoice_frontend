@@ -1,13 +1,16 @@
 import './Home.css';
+import HeroSection from '../components/HeroSection';
+import ServicesSection from '../components/ServicesSection';
 
 function Home() {
   return (
     <div className="home">
-      <div className="home-content">
-        <h1>Welcome to Medivoice</h1>
-        <p>Your platform for seamless communication and collaboration.</p>
-        <p>Register to get started or log in to access your dashboard.</p>
-      </div>
+      <HeroSection />
+      <ServicesSection />
+      <footer className="home-footer">
+        <p>© {new Date().getFullYear()} MediVoice Clinic System. All rights reserved.</p>
+        <p>Designed for clinical professionals — clean, minimal, and secure.</p>
+      </footer>
     </div>
   );
 }

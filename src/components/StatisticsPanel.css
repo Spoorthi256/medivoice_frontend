@@ -1,0 +1,160 @@
+.statistics-panel {
+  padding: 4rem 2rem;
+  background: white;
+}
+
+.stats-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.stats-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.stats-header h2 {
+  font-size: 2.5rem;
+  color: var(--primary-blue);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.stats-header p {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  border-radius: 12px;
+  background: white;
+  border-left: 4px solid;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Color variants */
+.stat-card.stat-blue {
+  border-left-color: var(--primary-blue);
+}
+
+.stat-card.stat-blue .stat-icon {
+  background: rgba(31, 122, 83, 0.1);
+  color: var(--primary-blue);
+}
+
+.stat-card.stat-green {
+  border-left-color: #00b368;
+}
+
+.stat-card.stat-green .stat-icon {
+  background: rgba(0, 179, 104, 0.1);
+  color: #00b368;
+}
+
+.stat-card.stat-purple {
+  border-left-color: #7c3aed;
+}
+
+.stat-card.stat-purple .stat-icon {
+  background: rgba(124, 58, 237, 0.1);
+  color: #7c3aed;
+}
+
+.stat-card.stat-orange {
+  border-left-color: #ff8c42;
+}
+
+.stat-card.stat-orange .stat-icon {
+  background: rgba(255, 140, 66, 0.1);
+  color: #ff8c42;
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  font-size: 2rem;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover .stat-icon {
+  transform: scale(1.1);
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.stat-suffix {
+  font-size: 1.5rem;
+  margin-left: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.95rem;
+  color: #666;
+  font-weight: 600;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .statistics-panel {
+    padding: 2rem 1rem;
+  }
+
+  .stats-header h2 {
+    font-size: 2rem;
+  }
+
+  .stats-header p {
+    font-size: 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .stat-card {
+    padding: 1.5rem;
+  }
+
+  .stat-value {
+    font-size: 1.75rem;
+  }
+
+  .stat-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.75rem;
+  }
+}

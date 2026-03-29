@@ -1,0 +1,237 @@
+.doctor-assistant-panel {
+  padding: 4rem 2rem;
+  background: linear-gradient(180deg, #f8fafb 0%, #f0f5f9 100%);
+}
+
+.doctor-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.doctor-layout {
+  margin-top: 3rem;
+}
+
+.doctor-main {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.doctor-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 3rem;
+}
+
+.doctor-hero-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.doctor-hero-content h3 {
+  font-size: 2.2rem;
+  color: var(--primary-blue);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.doctor-hero-content p {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.doctor-cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.doctor-feature-btn {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--primary-blue);
+  background: white;
+  color: var(--primary-blue);
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.doctor-feature-btn:hover {
+  background: var(--primary-blue);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.doctor-illustration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.doctor-dashboard-mockup {
+  background: #f0f5f9;
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 100%;
+  border: 2px solid #e0e7f1;
+}
+
+.dashboard-header {
+  font-weight: 700;
+  color: var(--primary-blue);
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.dashboard-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.dashboard-item {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 4px solid var(--primary-blue);
+}
+
+.item-label {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 600;
+}
+
+.item-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary-blue);
+}
+
+/* Features Grid */
+.doctor-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.doctor-feature-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  border-top: 4px solid;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.doctor-feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.doctor-feature-card.doctor-blue {
+  border-top-color: var(--primary-blue);
+}
+
+.doctor-feature-card.doctor-blue .doctor-card-icon {
+  background: rgba(31, 122, 83, 0.1);
+  color: var(--primary-blue);
+}
+
+.doctor-feature-card.doctor-green {
+  border-top-color: #00b368;
+}
+
+.doctor-feature-card.doctor-green .doctor-card-icon {
+  background: rgba(0, 179, 104, 0.1);
+  color: #00b368;
+}
+
+.doctor-feature-card.doctor-purple {
+  border-top-color: #7c3aed;
+}
+
+.doctor-feature-card.doctor-purple .doctor-card-icon {
+  background: rgba(124, 58, 237, 0.1);
+  color: #7c3aed;
+}
+
+.doctor-feature-card.doctor-orange {
+  border-top-color: #ff8c42;
+}
+
+.doctor-feature-card.doctor-orange .doctor-card-icon {
+  background: rgba(255, 140, 66, 0.1);
+  color: #ff8c42;
+}
+
+.doctor-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.doctor-feature-card:hover .doctor-card-icon {
+  transform: scale(1.15);
+}
+
+.doctor-feature-card h4 {
+  font-size: 1.2rem;
+  color: #1a1a1a;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+.doctor-feature-card p {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .doctor-assistant-panel {
+    padding: 2rem 1rem;
+  }
+
+  .doctor-hero {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+
+  .doctor-hero-content h3 {
+    font-size: 1.8rem;
+  }
+
+  .doctor-cta-group {
+    gap: 0.5rem;
+  }
+
+  .doctor-feature-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .doctor-features-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

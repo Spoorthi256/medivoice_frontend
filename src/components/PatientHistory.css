@@ -1,0 +1,167 @@
+.patient-history {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px var(--shadow);
+  margin: 1rem 0;
+}
+
+.patient-history h3 {
+  color: var(--primary-blue);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.patient-history.error {
+  color: #dc3545;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+}
+
+.history-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+  overflow-x: auto;
+}
+
+.tab-button {
+  background: var(--light-gray);
+  border: 1px solid var(--border-color);
+  color: var(--dark-gray);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.tab-button:hover {
+  background: #e9ecef;
+}
+
+.tab-button.active {
+  background: var(--primary-blue);
+  color: var(--white);
+  border-color: var(--primary-blue);
+}
+
+.history-content {
+  min-height: 200px;
+}
+
+.history-section p {
+  color: var(--medium-gray);
+  font-style: italic;
+}
+
+.history-item {
+  background: var(--light-gray);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.history-header strong {
+  color: var(--primary-blue);
+}
+
+.history-date {
+  color: var(--medium-gray);
+  font-size: 0.9rem;
+}
+
+.history-item p {
+  margin: 0.5rem 0;
+  color: var(--dark-gray);
+}
+
+.history-item ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.history-item li {
+  margin: 0.25rem 0;
+}
+
+.status-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-badge.scheduled { background: #cce7ff; color: #004085; }
+.status-badge.completed { background: #d4edda; color: #155724; }
+.status-badge.cancelled { background: #f8d7da; color: #721c24; }
+.status-badge.no_show { background: #fff3cd; color: #856404; }
+
+.severity-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+  display: inline-block;
+}
+
+.severity-badge.emergency { background: #dc3545; color: white; }
+.severity-badge.high { background: #fd7e14; color: white; }
+.severity-badge.medium { background: #ffc107; color: black; }
+.severity-badge.low { background: #28a745; color: white; }
+
+.query-response {
+  margin-top: 0.5rem;
+}
+
+.response-text {
+  background: var(--white);
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-top: 0.25rem;
+  border-left: 4px solid var(--primary-blue);
+}
+
+.response-text p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .patient-history {
+    padding: 1.5rem;
+  }
+
+  .history-tabs {
+    flex-wrap: wrap;
+  }
+
+  .tab-button {
+    flex: 1;
+    min-width: 120px;
+    justify-content: center;
+  }
+
+  .history-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}

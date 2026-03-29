@@ -1,0 +1,140 @@
+.symptom-analysis {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px var(--shadow);
+  margin: 1rem 0;
+}
+
+.symptom-analysis h2 {
+  color: var(--primary-blue);
+  margin-bottom: 0.5rem;
+  font-size: 1.8rem;
+}
+
+.symptom-analysis > p {
+  color: var(--medium-gray);
+  margin-bottom: 2rem;
+}
+
+.analysis-input {
+  margin-bottom: 2rem;
+}
+
+.analysis-input label {
+  display: block;
+  font-weight: 600;
+  color: var(--dark-gray);
+  margin-bottom: 0.5rem;
+}
+
+.analysis-input textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: vertical;
+  margin-bottom: 1rem;
+  background: var(--light-gray);
+  transition: border-color 0.2s ease;
+}
+
+.analysis-input textarea:focus {
+  border-color: var(--primary-blue);
+  background: var(--white);
+}
+
+.analyze-btn {
+  background: var(--primary-blue);
+  color: var(--white);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.analyze-btn:hover:not(:disabled) {
+  background: var(--primary-blue-dark);
+  transform: translateY(-1px);
+}
+
+.analyze-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error-message {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.analysis-result {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  background: #f8f9fa;
+}
+
+.severity-badge {
+  display: inline-block;
+  color: var(--white);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.response-content h3 {
+  color: var(--primary-blue);
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+}
+
+.response-text {
+  line-height: 1.6;
+  color: var(--dark-gray);
+}
+
+.response-text p {
+  margin: 0.5rem 0;
+}
+
+.response-text p:first-child {
+  font-weight: 600;
+  color: var(--primary-blue);
+}
+
+.response-meta {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+  text-align: right;
+}
+
+.response-meta small {
+  color: var(--medium-gray);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .symptom-analysis {
+    padding: 1.5rem;
+  }
+
+  .symptom-analysis h2 {
+    font-size: 1.5rem;
+  }
+
+  .analysis-input textarea {
+    font-size: 0.9rem;
+  }
+}

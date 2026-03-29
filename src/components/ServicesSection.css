@@ -1,0 +1,159 @@
+.services-section {
+  padding: 4rem 2rem;
+  background: linear-gradient(180deg, #f8fafb 0%, #f0f5f9 100%);
+}
+
+.services-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.service-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border-top: 4px solid;
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+.service-card:hover::before {
+  opacity: 1;
+}
+
+/* Color variants */
+.service-card.service-blue {
+  border-top-color: var(--primary-blue);
+}
+
+.service-card.service-blue .service-icon {
+  background: rgba(31, 122, 83, 0.1);
+  color: var(--primary-blue);
+}
+
+.service-card.service-green {
+  border-top-color: #00b368;
+}
+
+.service-card.service-green .service-icon {
+  background: rgba(0, 179, 104, 0.1);
+  color: #00b368;
+}
+
+.service-card.service-purple {
+  border-top-color: #7c3aed;
+}
+
+.service-card.service-purple .service-icon {
+  background: rgba(124, 58, 237, 0.1);
+  color: #7c3aed;
+}
+
+.service-card.service-orange {
+  border-top-color: #ff8c42;
+}
+
+.service-card.service-orange .service-icon {
+  background: rgba(255, 140, 66, 0.1);
+  color: #ff8c42;
+}
+
+.service-card.service-teal {
+  border-top-color: #00a896;
+}
+
+.service-card.service-teal .service-icon {
+  background: rgba(0, 168, 150, 0.1);
+  color: #00a896;
+}
+
+.service-card.service-red {
+  border-top-color: #d62828;
+}
+
+.service-card.service-red .service-icon {
+  background: rgba(214, 40, 40, 0.1);
+  color: #d62828;
+}
+
+.service-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.service-card:hover .service-icon {
+  transform: scale(1.1) rotateZ(-5deg);
+}
+
+.service-card h3 {
+  font-size: 1.3rem;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.service-card p {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .services-section {
+    padding: 2rem 1rem;
+  }
+
+  .section-header h2 {
+    font-size: 2rem;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .service-card {
+    padding: 1.5rem;
+  }
+
+  .service-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 2rem;
+  }
+}

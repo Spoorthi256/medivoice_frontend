@@ -4,6 +4,7 @@ import { api } from '../services/api';
 import { getUser } from '../services/auth';
 import VoiceRecorder from '../components/VoiceRecorder';
 import PrescriptionViewer from '../components/PrescriptionViewer';
+import PatientHistory from '../components/PatientHistory';
 import './PatientDetails.css';
 
 function PatientDetails() {
@@ -14,10 +15,6 @@ function PatientDetails() {
   const [saveMessage, setSaveMessage] = useState('');
   const [saveError, setSaveError] = useState('');
   const [saving, setSaving] = useState(false);
-  const [appointments, setAppointments] = useState([]);
-  const [prescriptions, setPrescriptions] = useState([]);
-  const [history, setHistory] = useState([]);
-  const [voiceNotes, setVoiceNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -26,13 +23,7 @@ function PatientDetails() {
       setLoading(true);
       setError('');
       try {
-        const [p, a, pr, h, v] = await Promise.all([
-          api.getPatientById(id),
-          api.getAppointmentsByPatient(id),
-          api.getPrescriptionsByPatient(id),
-          api.getMedicalHistoryByPatient(id),
-          api.getVoiceNotesByPatient(id),
-        ]);
+        const p = await api.getPatientById(id);
         setPatient(p);
         setEditForm({
           firstName: p.firstName || '',
@@ -44,10 +35,6 @@ function PatientDetails() {
           address: p.address || '',
           medicalHistory: p.medicalHistory || '',
         });
-        setAppointments(a);
-        setPrescriptions(pr);
-        setHistory(h);
-        setVoiceNotes(v);
       } catch (err) {
         setError(err.data?.message || err.message || 'Failed to load patient details');
       } finally {
@@ -246,66 +233,7 @@ function PatientDetails() {
         )}
       </header>
 
-      <section className="panels">
-        <div className="panel">
-          <h2>Appointment History</h2>
-          {appointments.length === 0 ? (
-            <p>No appointments found.</p>
-          ) : (
-            <ul>
-              {appointments.map((a) => (
-                <li key={a.id}>
-                  <strong>{new Date(a.appointmentDate).toLocaleString()}</strong> — {a.status}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        <div className="panel">
-          <h2>Prescription History</h2>
-          <PrescriptionViewer prescriptions={prescriptions} />
-        </div>
-
-        <div className="panel">
-          <h2>Diagnosis Notes</h2>
-          {history.length === 0 ? (
-            <p>No diagnosis notes found.</p>
-          ) : (
-            <ul>
-              {history.map((h) => (
-                <li key={h.id}>
-                  <strong>{h.diagnosisDate}</strong> — {h.diagnosis}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        <div className="panel">
-          <h2>Medical History</h2>
-          {patient.medicalHistory ? (
-            <p>{patient.medicalHistory}</p>
-          ) : (
-            <p>No medical history recorded.</p>
-          )}
-        </div>
-
-        <div className="panel">
-          <h2>Voice Notes</h2>
-          {voiceNotes.length === 0 ? (
-            <p>No voice notes found.</p>
-          ) : (
-            <ul>
-              {voiceNotes.map((v) => (
-                <li key={v.id}>
-                  <strong>{new Date(v.createdAt).toLocaleString()}</strong> — {v.transcript}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </section>
+      <PatientHistory patientId={id} />
 
       <section className="voice-panel">
         <h2>Voice to Prescription</h2>

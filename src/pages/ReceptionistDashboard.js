@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../services/api';
+import VoiceInput from '../components/VoiceInput';
 import './Dashboard.css';
 
 function ReceptionistDashboard() {
@@ -11,20 +12,19 @@ function ReceptionistDashboard() {
   const [patients, setPatients] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [selectedPatientId, setSelectedPatientId] = useState('');
+  const [patientId, setPatientId] = useState('');
   const [selectedDoctorId, setSelectedDoctorId] = useState('');
+  const [assignedDoctor, setAssignedDoctor] = useState('');
   const [appointmentDate, setAppointmentDate] = useState('');
-  const [appointmentNotes, setAppointmentNotes] = useState('');
+  const [dateTime, setDateTime] = useState('');
+  const [assignedDoctorLabel, setAssignedDoctorLabel] = useState('No patient selected');
+  const [selectedPatientHistory, setSelectedPatientHistory] = useState('');
   const [bookingError, setBookingError] = useState('');
   const [bookingSuccess, setBookingSuccess] = useState('');
   const [bookingLoading, setBookingLoading] = useState(false);
 
   const [voiceTranscript, setVoiceTranscript] = useState('');
-  const [listening, setListening] = useState(false);
-  const [recognition, setRecognition] = useState(null);
   const [voiceError, setVoiceError] = useState('');
-
-  const finalTranscriptRef = useRef('');
-  const shouldStopRef = useRef(true);
 
 
   useEffect(() => {
@@ -40,12 +40,12 @@ function ReceptionistDashboard() {
         if (cancelled) return;
         setData(dashboard?.data || {});
         setPatients(Array.isArray(patientList) ? patientList : []);
-        setDoctors(Array.isArray(userList) ? userList.filter((u) => u.role?.toLowerCase() === 'doctor') : []);
-        if (patientList?.length) setSelectedPatientId(patientList[0].id);
-        if (userList?.length) {
-          const firstDoctor = (userList || []).find((u) => u.role?.toLowerCase() === 'doctor');
-          if (firstDoctor) setSelectedDoctorId(firstDoctor.id);
-        }
+        // Keep doctor list for name matching in voice input, but no manual selection
+        setDoctors(
+          Array.isArray(userList) ? userList.filter((u) => u.role?.toLowerCase() === 'doctor') : []
+        );
+        // Keep initial patient selection empty
+        setSelectedPatientId('');
       } catch (err) {
         if (!cancelled) setError(err.data?.message || err.message || 'Failed to load dashboard');
       } finally {
@@ -61,64 +61,26 @@ function ReceptionistDashboard() {
   }, []);
 
   useEffect(() => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || null;
-    if (!SpeechRecognition) {
-      setVoiceError('Speech recognition is not supported in this browser.');
+    if (!selectedPatientId) {
+      setAssignedDoctorLabel('No patient selected');
+      setSelectedPatientHistory('');
       return;
     }
 
-    const rec = new SpeechRecognition();
-    rec.continuous = true;
-    rec.interimResults = true;
-    rec.lang = 'en-US';
-
-    rec.onresult = (event) => {
-      let interimTranscript = '';
-      let finalTranscript = finalTranscriptRef.current || '';
-
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        const result = event.results[i][0].transcript;
-        if (event.results[i].isFinal) {
-          finalTranscript += result + ' ';
-        } else {
-          interimTranscript += result + ' ';
-        }
-      }
-
-      finalTranscript = finalTranscript.trim();
-      interimTranscript = interimTranscript.trim();
-
-      finalTranscriptRef.current = finalTranscript;
-      setVoiceTranscript([finalTranscript, interimTranscript].filter(Boolean).join(' ').trim());
-    };
-
-    rec.onerror = (event) => {
-      setVoiceError('Speech recognition error: ' + (event.error || 'unknown'));
-      setListening(false);
-    };
-
-    rec.onend = () => {
-      if (!shouldStopRef.current) {
-        try {
-          rec.start();
-        } catch (e) {
-          // ignore
-        }
-      } else {
-        setListening(false);
-      }
-    };
-
-    setRecognition(rec);
-
-    return () => {
-      try {
-        rec.stop();
-      } catch (e) {
-        // ignore
-      }
-    };
-  }, []);
+    api.getPatientById(selectedPatientId)
+      .then((patient) => {
+        const doctorName = patient.assignedDoctorName || 'Unknown';
+        const doctorSpec = patient.assignedDoctorSpecialization ? ` (${patient.assignedDoctorSpecialization})` : '';
+        setAssignedDoctorLabel(`Assigned Doctor: Dr. ${doctorName}${doctorSpec}`);
+        setSelectedPatientHistory(patient.medicalHistory || '');
+        setSelectedDoctorId(patient.assignedDoctorId ? patient.assignedDoctorId.toString() : '');
+      })
+      .catch(() => {
+        setAssignedDoctorLabel('Unable to load assigned doctor');
+        setSelectedPatientHistory('');
+        setSelectedDoctorId('');
+      });
+  }, [selectedPatientId]);
 
   const handleBookAppointment = async (e) => {
     e.preventDefault();
@@ -126,14 +88,18 @@ function ReceptionistDashboard() {
     setBookingSuccess('');
     setBookingLoading(true);
     try {
-      await api.createAppointment({
+      const payload = {
         patientId: Number(selectedPatientId),
-        doctorId: Number(selectedDoctorId),
         appointmentDate: appointmentDate,
-        notes: appointmentNotes,
-      });
+        notes: '',
+      };
+
+      if (selectedDoctorId) {
+        payload.doctorId = Number(selectedDoctorId);
+      }
+
+      await api.createAppointment(payload);
       setBookingSuccess('Appointment booked successfully.');
-      setAppointmentNotes('');
     } catch (err) {
       setBookingError(err.data?.message || err.message || 'Failed to book appointment');
     } finally {
@@ -173,13 +139,13 @@ function ReceptionistDashboard() {
       working = working.replace(dateTimeMatch[0], ' ');
     }
 
-    // Notes: prefer text after keywords, otherwise take remaining text
-    const notesMatch = /(?:for|notes?|reason)\s+(.+)/i.exec(working);
+    // Medical History: prefer text after keywords, otherwise take remaining text
+    const notesMatch = /(?:for|notes?|history|reason)\s+(.+)/i.exec(working);
     if (notesMatch) {
-      result.notes = notesMatch[1].trim();
+      result.medicalHistory = notesMatch[1].trim();
     } else {
       const remaining = working.replace(/\s+/g, ' ').trim();
-      if (remaining) result.notes = remaining;
+      if (remaining) result.medicalHistory = remaining;
     }
 
     return result;
@@ -201,27 +167,74 @@ function ReceptionistDashboard() {
     });
   };
 
-  const handleProceedVoice = () => {
-    if (!voiceTranscript.trim()) return;
+  const handleProceedVoice = async () => {
+    console.log('Proceed click: transcript=', voiceTranscript);
+    if (!voiceTranscript?.trim()) {
+      console.log('No transcript to process.');
+      return;
+    }
+
     const parsed = parseAppointmentVoiceInput(voiceTranscript);
+    console.log('Parsed voice data:', parsed);
 
+    // Patient MMatching
     if (parsed.patientName) {
-      const match = findOptionByName(patients, parsed.patientName, ['firstName', 'lastName']);
-      if (match) setSelectedPatientId(match.id);
+      const patientMatch = findOptionByName(patients, parsed.patientName, ['firstName', 'lastName']);
+      console.log('Matched patient:', patientMatch);
+
+      if (patientMatch) {
+        setSelectedPatientId(patientMatch.id.toString());
+        setPatientId(patientMatch.id.toString());
+
+        try {
+          const patientData = await api.getPatientById(patientMatch.id);
+          const doctorLabel = patientData.assignedDoctorName
+            ? `Dr. ${patientData.assignedDoctorName}${patientData.assignedDoctorSpecialization ? ` (${patientData.assignedDoctorSpecialization})` : ''}`
+            : 'None';
+
+          setAssignedDoctor(doctorLabel);
+          setAssignedDoctorLabel(`Assigned Doctor: ${doctorLabel}`);
+          setSelectedDoctorId(patientData.assignedDoctorId ? patientData.assignedDoctorId.toString() : '');
+
+          if (patientData.medicalHistory) {
+            setSelectedPatientHistory(patientData.medicalHistory);
+          }
+        } catch (error) {
+          console.error('Failed to fetch patient details for assigned doctor:', error);
+        }
+      }
     }
 
+    // Doctor
     if (parsed.doctorName) {
-      const match = findOptionByName(doctors, parsed.doctorName, ['username', 'email']);
-      if (match) setSelectedDoctorId(match.id);
+      const doctorMatch = findOptionByName(doctors, parsed.doctorName, ['firstName', 'lastName', 'username', 'specialization']);
+      console.log('Matched doctor:', doctorMatch);
+      if (doctorMatch) {
+        setSelectedDoctorId(doctorMatch.id?.toString() || '');
+        const name = doctorMatch.firstName && doctorMatch.lastName ? `${doctorMatch.firstName} ${doctorMatch.lastName}` : doctorMatch.username;
+        const specialization = doctorMatch.specialization ? ` (${doctorMatch.specialization})` : '';
+        const doctorLabel = `Dr. ${name}${specialization}`;
+        setAssignedDoctor(doctorLabel);
+        setAssignedDoctorLabel(`Assigned Doctor: ${doctorLabel}`);
+      }
     }
 
+    // Date/time
     if (parsed.dateTime) {
+      console.log('Extracted dateTime:', parsed.dateTime);
       setAppointmentDate(parsed.dateTime);
+      setDateTime(parsed.dateTime);
     }
 
-    if (parsed.notes) {
-      setAppointmentNotes(parsed.notes);
-    }
+    // Medical history removed by request: no action on parsed medical-history data
+
+    // ensure state values are visible
+    console.log('State after proceed:', {
+      patientId: patientId || selectedPatientId,
+      assignedDoctor,
+      dateTime: parsed.dateTime || dateTime || appointmentDate,
+      selectedPatientHistory,
+    });
   };
 
 
@@ -254,136 +267,104 @@ function ReceptionistDashboard() {
         </div>
       </div>
 
-      <div style={{ marginTop: '1.5rem' }}>
+      <div className="appointment-section" style={{ marginTop: '1.5rem' }}>
         <h2>Book Appointment</h2>
 
-        <div style={{ marginBottom: '1rem', maxWidth: 520 }}>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={() => {
-              setVoiceError('');
-              setVoiceTranscript('');
-              finalTranscriptRef.current = '';
-              shouldStopRef.current = false;
-              if (recognition) {
-                recognition.start();
-                setListening(true);
-              }
-            }}
-            disabled={listening || !!voiceError}
-          >
-            Start Voice Input
-          </button>
-          <button
-            type="button"
-            className="btn"
-            onClick={() => {
-              shouldStopRef.current = true;
-              if (recognition) recognition.stop();
-              setListening(false);
-            }}
-            disabled={!listening}
-            style={{ marginLeft: '0.75rem' }}
-          >
-            Stop Recording
-          </button>
-
-          {listening && (
-            <div className="form-info" style={{ marginTop: '0.75rem' }}>
-              🔴 Listening...
-            </div>
-          )}
-          {voiceError && <div className="form-error" style={{ marginTop: '0.75rem' }}>{voiceError}</div>}
-
-          {voiceTranscript && (
-            <div style={{ marginTop: '0.75rem' }}>
-              <label htmlFor="voicePreview" style={{ fontWeight: '600', marginBottom: '0.25rem', display: 'block' }}>
-                Recognized Speech Preview
-              </label>
-              <textarea
-                id="voicePreview"
-                value={voiceTranscript}
-                onChange={(e) => setVoiceTranscript(e.target.value)}
-                rows={4}
-                style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid #ccc' }}
-              />
-              {!listening && (
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleProceedVoice}
-                  style={{ marginTop: '0.75rem' }}
+        <div className="appointment-container">
+          <div className="appointment-panel left-panel">
+            <form onSubmit={handleBookAppointment}>
+              {bookingError && <div className="form-error">{bookingError}</div>}
+              {bookingSuccess && <div className="form-success">{bookingSuccess}</div>}
+              <div className="form-group">
+                <label htmlFor="appointmentPatient">Patient</label>
+                <select
+                  id="appointmentPatient"
+                  value={selectedPatientId}
+                  onChange={(e) => {
+                    setSelectedPatientId(e.target.value);
+                    setPatientId(e.target.value);
+                  }}
+                  required
                 >
-                  Proceed
-                </button>
-              )}
-            </div>
-          )}
-        </div>
+                  <option value="" disabled>
+                    Select a patient
+                  </option>
+                  {patients.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.firstName} {p.lastName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="appointmentDoctor">Assigned Doctor</label>
+                <select
+                  id="appointmentDoctor"
+                  value={selectedDoctorId}
+                  onChange={(e) => {
+                    setSelectedDoctorId(e.target.value);
+                    const selector = doctors.find((d) => d.id?.toString() === e.target.value);
+                    if (selector) {
+                      const name = selector.firstName && selector.lastName ? `${selector.firstName} ${selector.lastName}` : selector.username;
+                      const specialization = selector.specialization ? ` (${selector.specialization})` : '';
+                      const label = `Dr. ${name}${specialization}`;
+                      setAssignedDoctor(label);
+                      setAssignedDoctorLabel(`Assigned Doctor: ${label}`);
+                    } else {
+                      setAssignedDoctor('');
+                      setAssignedDoctorLabel('No doctor selected');
+                    }
+                  }}
+                  required
+                >
+                  <option value="" disabled>
+                    Select a doctor
+                  </option>
+                  {doctors.map((doc) => {
+                    const displayName = doc.firstName && doc.lastName ? `${doc.firstName} ${doc.lastName}` : doc.username;
+                    return (
+                      <option key={doc.id} value={doc.id}>
+                        {displayName}{doc.specialization ? ` (${doc.specialization})` : ''}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="appointmentDate">Date & Time</label>
+                <input
+                  id="appointmentDate"
+                  type="datetime-local"
+                  value={dateTime || appointmentDate}
+                  onChange={(e) => {
+                    setAppointmentDate(e.target.value);
+                    setDateTime(e.target.value);
+                  }}
+                  required
+                />
+              </div>
+              <button type="submit" className="btn btn-primary" disabled={bookingLoading}>
+                {bookingLoading ? 'Booking…' : 'Book Appointment'}
+              </button>
+            </form>
+          </div>
 
-        <form onSubmit={handleBookAppointment} style={{ maxWidth: 520 }}>
-          {bookingError && <div className="form-error">{bookingError}</div>}
-          {bookingSuccess && <div className="form-success">{bookingSuccess}</div>}
-          <div className="form-group">
-            <label htmlFor="appointmentPatient">Patient</label>
-            <select
-              id="appointmentPatient"
-              value={selectedPatientId}
-              onChange={(e) => setSelectedPatientId(e.target.value)}
-              required
-            >
-              <option value="" disabled>
-                Select a patient
-              </option>
-              {patients.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.firstName} {p.lastName}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="form-group">
-            <label htmlFor="appointmentDoctor">Doctor</label>
-            <select
-              id="appointmentDoctor"
-              value={selectedDoctorId}
-              onChange={(e) => setSelectedDoctorId(e.target.value)}
-              required
-            >
-              <option value="" disabled>
-                Select a doctor
-              </option>
-              {doctors.map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.username} ({d.email})
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="form-group">
-            <label htmlFor="appointmentDate">Date & Time</label>
-            <input
-              id="appointmentDate"
-              type="datetime-local"
-              value={appointmentDate}
-              onChange={(e) => setAppointmentDate(e.target.value)}
-              required
+          <div className="appointment-panel right-panel">
+            <h3>Voice Input</h3>
+            <VoiceInput
+              value={voiceTranscript}
+              onChange={setVoiceTranscript}
+              onProceed={handleProceedVoice}
+              onReset={() => {
+                setVoiceTranscript('');
+                setVoiceError('');
+              }}
+              onError={(msg) => setVoiceError(msg)}
+              placeholder="Your speech will appear here..."
             />
+            {voiceError && <div className="form-error" style={{ marginTop: '0.75rem' }}>{voiceError}</div>}
           </div>
-          <div className="form-group">
-            <label htmlFor="appointmentNotes">Notes (optional)</label>
-            <textarea
-              id="appointmentNotes"
-              value={appointmentNotes}
-              onChange={(e) => setAppointmentNotes(e.target.value)}
-              rows={3}
-            />
-          </div>
-          <button type="submit" className="btn btn-primary" disabled={bookingLoading}>
-            {bookingLoading ? 'Booking…' : 'Book Appointment'}
-          </button>
-        </form>
+        </div>
       </div>
     </div>
   );

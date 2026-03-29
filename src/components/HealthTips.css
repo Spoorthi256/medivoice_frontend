@@ -1,0 +1,114 @@
+.health-tips {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  margin: 0;
+}
+
+.health-tips h2 {
+  color: #00b368;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.health-tips > p {
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+.health-tips.error {
+  color: #dc3545;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.tip-card {
+  background: linear-gradient(135deg, #f0fff6 0%, #e6fff0 100%);
+  border: 1px solid #c3e6cb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  position: relative;
+  transition: all 0.3s ease;
+  border-left: 4px solid #00b368;
+}
+
+.tip-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 179, 104, 0.15);
+  border-left-color: #009456;
+}
+
+.tip-number {
+  position: absolute;
+  top: -12px;
+  left: 1.5rem;
+  background: linear-gradient(135deg, #00b368 0%, #009456 100%);
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px rgba(0, 179, 104, 0.3);
+}
+
+.tip-card p {
+  margin: 0;
+  color: #444;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  padding-top: 0.5rem;
+}
+
+.tips-footer {
+  background: linear-gradient(135deg, #e6ffed 0%, #d4ffe6 100%);
+  border: 1px solid #c3e6cb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  color: #155724;
+}
+
+.tips-footer strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.tips-footer p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .health-tips {
+    padding: 1.5rem;
+  }
+
+  .tips-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .tip-card {
+    padding: 1.25rem;
+  }
+
+  .health-tips h2 {
+    font-size: 1.3rem;
+  }
+}

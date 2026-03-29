@@ -1,24 +1,130 @@
 .home {
-  min-height: calc(100vh - 80px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
+  min-height: 100vh;
+  width: 100%;
+  background: #f5fbff;
+  color: #0f1f3d;
+  font-family: 'Inter', sans-serif;
 }
 
-.home-content {
+.home-footer {
+  margin: 2rem auto 1rem;
+  max-width: 1080px;
   text-align: center;
-  max-width: 500px;
+  color: #6f7d94;
+  font-size: 0.95rem;
+  padding: 1rem;
 }
 
-.home-content h1 {
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-header h2 {
   font-size: 2.5rem;
-  color: #1a5f7a;
-  margin-bottom: 1rem;
+  color: var(--primary-blue);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
 }
 
-.home-content p {
+.section-header p {
   font-size: 1.1rem;
-  color: #555;
-  margin: 0.5rem 0;
+  color: #666;
 }
+
+/* Disclaimer Section */
+.home-disclaimer-section {
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, #fff3cd 0%, #ffe8a8 100%);
+  border-top: 2px solid #ffc107;
+}
+
+.disclaimer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.disclaimer-content {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  border-left: 5px solid #ff8c42;
+  box-shadow: 0 4px 16px rgba(255, 140, 66, 0.15);
+}
+
+.disclaimer-content h3 {
+  color: #ff8c42;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.disclaimer-content p {
+  color: #555;
+  line-height: 1.8;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.disclaimer-content strong {
+  color: #333;
+  font-weight: 700;
+}
+
+.disclaimer-highlight {
+  background: #f8d7da;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #d62828;
+  color: #721c24;
+  font-weight: 600;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.home > * {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.home > :nth-child(1) { animation-delay: 0s; }
+.home > :nth-child(2) { animation-delay: 0.1s; }
+.home > :nth-child(3) { animation-delay: 0.2s; }
+.home > :nth-child(4) { animation-delay: 0.3s; }
+.home > :nth-child(5) { animation-delay: 0.4s; }
+.home > :nth-child(6) { animation-delay: 0.5s; }
+.home > :nth-child(7) { animation-delay: 0.6s; }
+.home > :nth-child(8) { animation-delay: 0.7s; }
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .home-tips-section {
+    padding: 2rem 1rem;
+  }
+
+  .section-header h2 {
+    font-size: 2rem;
+  }
+
+  .section-header p {
+    font-size: 1rem;
+  }
+
+  .disclaimer-content {
+    padding: 1.5rem;
+  }
+
+  .home-disclaimer-section {
+    padding: 2rem 1rem;
+  }
+}
+

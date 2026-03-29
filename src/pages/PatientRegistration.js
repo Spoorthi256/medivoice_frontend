@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
+import VoiceInput from '../components/VoiceInput';
 import './Form.css';
-
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || null;
 
 function parsePatientVoiceInput(transcript) {
   const result = {};
@@ -134,103 +133,11 @@ function PatientRegistration() {
   const [loading, setLoading] = useState(false);
 
   const [voiceTranscript, setVoiceTranscript] = useState('');
-  const [listening, setListening] = useState(false);
-  const [recognition, setRecognition] = useState(null);
   const [voiceError, setVoiceError] = useState('');
-
-  const finalTranscriptRef = useRef('');
-  const shouldStopRef = useRef(true);
-
-  useEffect(() => {
-    if (!SpeechRecognition) {
-      setVoiceError('Speech recognition is not supported in this browser.');
-      return;
-    }
-
-    const rec = new SpeechRecognition();
-    rec.continuous = true;
-    rec.interimResults = true;
-    rec.lang = 'en-US';
-
-    rec.onresult = (event) => {
-      let interimTranscript = '';
-      let finalTranscript = finalTranscriptRef.current || '';
-
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        const result = event.results[i][0].transcript;
-        if (event.results[i].isFinal) {
-          finalTranscript += result + ' ';
-        } else {
-          interimTranscript += result + ' ';
-        }
-      }
-
-      finalTranscript = finalTranscript.trim();
-      interimTranscript = interimTranscript.trim();
-
-      finalTranscriptRef.current = finalTranscript;
-      setVoiceTranscript([finalTranscript, interimTranscript].filter(Boolean).join(' ').trim());
-    };
-
-    rec.onerror = (event) => {
-      setVoiceError('Speech recognition error: ' + (event.error || 'unknown'));
-      setListening(false);
-    };
-
-    rec.onend = () => {
-      // If the user has not requested stop, restart recognition to keep listening.
-      if (!shouldStopRef.current) {
-        try {
-          rec.start();
-        } catch (e) {
-          // ignore
-        }
-      } else {
-        setListening(false);
-      }
-    };
-
-    setRecognition(rec);
-
-    return () => {
-      try {
-        rec.stop();
-      } catch (e) {
-        // ignore
-      }
-    };
-  }, []);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setError('');
-  };
-
-  const handleStartVoice = () => {
-    setVoiceError('');
-    setVoiceTranscript('');
-    finalTranscriptRef.current = '';
-    shouldStopRef.current = false;
-
-    if (!recognition) {
-      setVoiceError('Speech recognition is not available.');
-      return;
-    }
-
-    try {
-      recognition.start();
-      setListening(true);
-    } catch (e) {
-      setVoiceError('Unable to start voice input: ' + e.message);
-    }
-  };
-
-  const handleStopVoice = () => {
-    shouldStopRef.current = true;
-    if (recognition) {
-      recognition.stop();
-    }
-    setListening(false);
   };
 
   const handleProceedVoice = () => {
@@ -269,45 +176,24 @@ function PatientRegistration() {
       <div className="form-card">
         <h1>Register Patient</h1>
         <div style={{ marginBottom: '1rem' }}>
-          <button type="button" className="btn btn-secondary" onClick={handleStartVoice} disabled={listening || !!voiceError}>
-            Start Voice Input
-          </button>
-          <button type="button" className="btn" onClick={handleStopVoice} disabled={!listening} style={{ marginLeft: '0.75rem' }}>
-            Stop Recording
-          </button>
+          <VoiceInput
+            value={voiceTranscript}
+            onChange={setVoiceTranscript}
+            onError={(msg) => setVoiceError(msg)}
+            placeholder="Your speech will appear here..."
+          />
 
-          {listening && (
-            <div className="form-info" style={{ marginTop: '0.75rem' }}>
-              🔴 Listening...
-            </div>
-          )}
           {voiceError && <div className="form-error" style={{ marginTop: '0.75rem' }}>{voiceError}</div>}
 
-          {voiceTranscript && (
-            <div style={{ marginTop: '0.75rem' }}>
-              <label htmlFor="voicePreview" style={{ fontWeight: '600', marginBottom: '0.25rem', display: 'block' }}>
-                Recognized Speech Preview
-              </label>
-              <textarea
-                id="voicePreview"
-                className="voice-preview"
-                value={voiceTranscript}
-                onChange={(e) => setVoiceTranscript(e.target.value)}
-                rows={4}
-                style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid #ccc' }}
-              />
-              {!listening && (
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleProceedVoice}
-                  style={{ marginTop: '0.75rem' }}
-                >
-                  Proceed
-                </button>
-              )}
-            </div>
-          )}
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleProceedVoice}
+            style={{ marginTop: '0.75rem' }}
+            disabled={!voiceTranscript.trim()}
+          >
+            Use Voice Input
+          </button>
         </div>
 
         <form onSubmit={handleSubmit}>
