@@ -17,7 +17,6 @@ function ReceptionistDashboard() {
   const [assignedDoctor, setAssignedDoctor] = useState('');
   const [appointmentDate, setAppointmentDate] = useState('');
   const [dateTime, setDateTime] = useState('');
-  const [assignedDoctorLabel, setAssignedDoctorLabel] = useState('No patient selected');
   const [selectedPatientHistory, setSelectedPatientHistory] = useState('');
   const [bookingError, setBookingError] = useState('');
   const [bookingSuccess, setBookingSuccess] = useState('');
@@ -62,21 +61,16 @@ function ReceptionistDashboard() {
 
   useEffect(() => {
     if (!selectedPatientId) {
-      setAssignedDoctorLabel('No patient selected');
       setSelectedPatientHistory('');
       return;
     }
 
     api.getPatientById(selectedPatientId)
       .then((patient) => {
-        const doctorName = patient.assignedDoctorName || 'Unknown';
-        const doctorSpec = patient.assignedDoctorSpecialization ? ` (${patient.assignedDoctorSpecialization})` : '';
-        setAssignedDoctorLabel(`Assigned Doctor: Dr. ${doctorName}${doctorSpec}`);
         setSelectedPatientHistory(patient.medicalHistory || '');
         setSelectedDoctorId(patient.assignedDoctorId ? patient.assignedDoctorId.toString() : '');
       })
       .catch(() => {
-        setAssignedDoctorLabel('Unable to load assigned doctor');
         setSelectedPatientHistory('');
         setSelectedDoctorId('');
       });
@@ -193,7 +187,6 @@ function ReceptionistDashboard() {
             : 'None';
 
           setAssignedDoctor(doctorLabel);
-          setAssignedDoctorLabel(`Assigned Doctor: ${doctorLabel}`);
           setSelectedDoctorId(patientData.assignedDoctorId ? patientData.assignedDoctorId.toString() : '');
 
           if (patientData.medicalHistory) {
@@ -209,15 +202,14 @@ function ReceptionistDashboard() {
     if (parsed.doctorName) {
       const doctorMatch = findOptionByName(doctors, parsed.doctorName, ['firstName', 'lastName', 'username', 'specialization']);
       console.log('Matched doctor:', doctorMatch);
-      if (doctorMatch) {
-        setSelectedDoctorId(doctorMatch.id?.toString() || '');
-        const name = doctorMatch.firstName && doctorMatch.lastName ? `${doctorMatch.firstName} ${doctorMatch.lastName}` : doctorMatch.username;
-        const specialization = doctorMatch.specialization ? ` (${doctorMatch.specialization})` : '';
-        const doctorLabel = `Dr. ${name}${specialization}`;
-        setAssignedDoctor(doctorLabel);
-        setAssignedDoctorLabel(`Assigned Doctor: ${doctorLabel}`);
+        if (doctorMatch) {
+          setSelectedDoctorId(doctorMatch.id?.toString() || '');
+          const name = doctorMatch.firstName && doctorMatch.lastName ? `${doctorMatch.firstName} ${doctorMatch.lastName}` : doctorMatch.username;
+          const specialization = doctorMatch.specialization ? ` (${doctorMatch.specialization})` : '';
+          const doctorLabel = `Dr. ${name}${specialization}`;
+          setAssignedDoctor(doctorLabel);
+        }
       }
-    }
 
     // Date/time
     if (parsed.dateTime) {
@@ -309,10 +301,8 @@ function ReceptionistDashboard() {
                       const specialization = selector.specialization ? ` (${selector.specialization})` : '';
                       const label = `Dr. ${name}${specialization}`;
                       setAssignedDoctor(label);
-                      setAssignedDoctorLabel(`Assigned Doctor: ${label}`);
                     } else {
                       setAssignedDoctor('');
-                      setAssignedDoctorLabel('No doctor selected');
                     }
                   }}
                   required

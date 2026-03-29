@@ -1,4 +1,4 @@
-import { FaMicrophone, FaChartLine, FaUserLock, FaRobot, FaClock, FaShieldHalved } from 'react-icons/fa6';
+import { FaMicrophone, FaChartLine, FaUserLock } from 'react-icons/fa6';
 import './ServicesSection.css';
 
 function ServicesSection() {

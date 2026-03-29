@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { api } from '../services/api';
 import { getUser } from '../services/auth';
 import VoiceRecorder from '../components/VoiceRecorder';
-import PrescriptionViewer from '../components/PrescriptionViewer';
 import PatientHistory from '../components/PatientHistory';
 import './PatientDetails.css';
 
